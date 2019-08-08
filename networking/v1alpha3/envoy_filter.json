@@ -182,7 +182,8 @@
           "HTTP_FILTER",
           "ROUTE_CONFIGURATION",
           "VIRTUAL_HOST",
-          "CLUSTER"
+          "CLUSTER",
+          "ROUTE"
         ],
         "default": "INVALID"
       },
