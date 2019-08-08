@@ -350,6 +350,9 @@ message EnvoyFilter {
 
     // Applies the patch to a cluster in a CDS output. Also used to add new clusters.
     CLUSTER = 7;
+
+    // Applies the patch to the route inside the virtual host of a route configuration.
+    ROUTE = 8;
   };
 
   // PatchContext selects a class of configurations based on the
