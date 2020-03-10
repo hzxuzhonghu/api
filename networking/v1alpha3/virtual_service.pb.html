@@ -6,7 +6,7 @@ layout: protoc-gen-docs
 generator: protoc-gen-docs
 schema: istio.networking.v1alpha3.VirtualService
 aliases: [/docs/reference/config/networking/v1alpha3/virtual-service]
-number_of_entries: 23
+number_of_entries: 24
 ---
 <p>Configuration affecting traffic routing. Here are a few terms useful to define
 in the context of traffic routing.</p>
@@ -304,6 +304,102 @@ No
 <p>Indicates whether the caller is allowed to send the actual request
 (not the preflight) using credentials. Translates to
 <code>Access-Control-Allow-Credentials</code> header.</p>
+
+</td>
+<td>
+No
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<h2 id="Delegate">Delegate</h2>
+<section>
+<p>Describes the delegated VirtualService.
+The following routing rules forward the traffic to <code>/productpage</code> by a delegated VirtualService named <code>productpage</code>,
+forward the traffic to <code>/reviews</code> by a delegated VirtualService named <code>reviews</code>.</p>
+
+<pre><code class="language-yaml">apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: bookinfo
+spec:
+  hosts:
+  - &quot;bookinfo.com&quot;
+  gateways:
+  - mygateway
+  http:
+  - match:
+    - uri:
+        prefix: &quot;/productpage&quot;
+    delegate:
+       name: productpage
+       namespace: nsA
+  - match:
+    - uri:
+        prefix: &quot;/reviews&quot;
+    delegate:
+        name: reviews
+        namespace: nsB
+</code></pre>
+
+<pre><code class="language-yaml">apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: productpage
+  namespace: nsA
+spec:
+  http:
+  - match:
+     - uri:
+        prefix: &quot;/productpage/v1/&quot;
+    route:
+    - destination:
+        host: productpage-v1.nsA.svc.cluster.local
+  - route:
+    - destination:
+        host: productpage.nsA.svc.cluster.local
+</code></pre>
+
+<pre><code class="language-yaml">apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: reviews
+  namespace: nsB
+spec:
+  http:
+  - route:
+    - destination:
+        host: reviews.nsB.svc.cluster.local
+</code></pre>
+
+<table class="message-fields">
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr id="Delegate-name">
+<td><code>name</code></td>
+<td><code>string</code></td>
+<td>
+<p>Name specifies the name of the delegated VirtualService.</p>
+
+</td>
+<td>
+No
+</td>
+</tr>
+<tr id="Delegate-namespace">
+<td><code>namespace</code></td>
+<td><code>string</code></td>
+<td>
+<p>Namespace specifies the namespace where the delegated VirtualService resides.
+By default, it is same to the root&rsquo;s.</p>
 
 </td>
 <td>
@@ -941,7 +1037,8 @@ spec:
 <p>{{</tab>}}
 {{</tabset>}}</p>
 
-<p>HTTPMatchRequest CANNOT be empty.</p>
+<p>HTTPMatchRequest CANNOT be empty.
+<strong>Note:</strong> No regex string match can be set when delegated VirtualService is specified.</p>
 
 <table class="message-fields">
 <thead>
@@ -1554,6 +1651,24 @@ No
 traffic passthrough option is specified in the rule,
 route/redirect will be ignored. The redirect primitive can be used to
 send a HTTP 301 redirect to a different URI or Authority.</p>
+
+</td>
+<td>
+No
+</td>
+</tr>
+<tr id="HTTPRoute-delegate">
+<td><code>delegate</code></td>
+<td><code><a href="#Delegate">Delegate</a></code></td>
+<td>
+<p>Delegate is used to specify the particular VirtualService which
+can be used to define delegated HTTPRoute.
+It can be set only when <code>Route</code> and <code>Redirect</code> are empty, and the route rules of the
+delegated VirtualService will be merged with that in the current one.
+<strong>NOTE</strong>:
+   1. currently only one tier of delegate can be set.
+   2. The delegate&rsquo;s HTTPMatchRequest must be a strict subset of the root&rsquo;s,
+      otherwise there is a conflict and the VirtualService will not take effect.</p>
 
 </td>
 <td>
@@ -2279,6 +2394,24 @@ No
 No
 </td>
 </tr>
+<tr id="TCPRoute-delegate">
+<td><code>delegate</code></td>
+<td><code><a href="#Delegate">Delegate</a></code></td>
+<td>
+<p>Delegate is used to specify the particular VirtualService which
+can be used to define delegated TCPRoute.
+It can be set only when <code>Route</code> is empty, and the route rules of the
+delegated VirtualService will be merged with that in the current one.
+<strong>NOTE</strong>:
+   1. currently only one tier of delegate can be set.
+   2. The delegate&rsquo;s Match conditions must be a strict subset of the root&rsquo;s,
+      otherwise there is a conflict and the VirtualService will not take effect.</p>
+
+</td>
+<td>
+No
+</td>
+</tr>
 </tbody>
 </table>
 </section>
@@ -2483,6 +2616,24 @@ Yes
 No
 </td>
 </tr>
+<tr id="TLSRoute-delegate">
+<td><code>delegate</code></td>
+<td><code><a href="#Delegate">Delegate</a></code></td>
+<td>
+<p>Delegate is used to specify the particular VirtualService which
+can be used to define delegated TLSRoute.
+It can be set only when <code>Route</code> is empty, and the route rules of the
+delegated VirtualService will be merged with that in the current one.
+<strong>NOTE</strong>:
+   1. currently only one tier of delegate can be set.
+   2. The delegate&rsquo;s Match conditions must be a strict subset of the root&rsquo;s,
+      otherwise there is a conflict and the VirtualService will not take effect.</p>
+
+</td>
+<td>
+No
+</td>
+</tr>
 </tbody>
 </table>
 </section>
@@ -2532,9 +2683,11 @@ the mesh, i.e., those found in the service registry, must always be
 referred to using their alphanumeric names. IP addresses are allowed
 only for services defined via the Gateway.</p>
 
+<p><em>Note</em>: It must be empty for a delegate VirtualService.</p>
+
 </td>
 <td>
-Yes
+No
 </td>
 </tr>
 <tr id="VirtualService-gateways">

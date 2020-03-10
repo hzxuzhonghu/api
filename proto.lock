@@ -40307,13 +40307,7 @@
                 "id": 1,
                 "name": "hosts",
                 "type": "string",
-                "is_repeated": true,
-                "options": [
-                  {
-                    "name": "(google.api.field_behavior)",
-                    "value": "REQUIRED"
-                  }
-                ]
+                "is_repeated": true
               },
               {
                 "id": 2,
@@ -40399,6 +40393,11 @@
                 "type": "HTTPRedirect"
               },
               {
+                "id": 20,
+                "name": "delegate",
+                "type": "Delegate"
+              },
+              {
                 "id": 4,
                 "name": "rewrite",
                 "type": "HTTPRewrite"
@@ -40468,6 +40467,21 @@
             ]
           },
           {
+            "name": "Delegate",
+            "fields": [
+              {
+                "id": 1,
+                "name": "name",
+                "type": "string"
+              },
+              {
+                "id": 2,
+                "name": "namespace",
+                "type": "string"
+              }
+            ]
+          },
+          {
             "name": "Headers",
             "fields": [
               {
@@ -40533,6 +40547,11 @@
                 "name": "route",
                 "type": "RouteDestination",
                 "is_repeated": true
+              },
+              {
+                "id": 3,
+                "name": "delegate",
+                "type": "Delegate"
               }
             ]
           },
@@ -40550,6 +40569,11 @@
                 "name": "route",
                 "type": "RouteDestination",
                 "is_repeated": true
+              },
+              {
+                "id": 3,
+                "name": "delegate",
+                "type": "Delegate"
               }
             ]
           },
@@ -42248,13 +42272,7 @@
                 "id": 1,
                 "name": "hosts",
                 "type": "string",
-                "is_repeated": true,
-                "options": [
-                  {
-                    "name": "(google.api.field_behavior)",
-                    "value": "REQUIRED"
-                  }
-                ]
+                "is_repeated": true
               },
               {
                 "id": 2,
@@ -42340,6 +42358,11 @@
                 "type": "HTTPRedirect"
               },
               {
+                "id": 20,
+                "name": "delegate",
+                "type": "Delegate"
+              },
+              {
                 "id": 4,
                 "name": "rewrite",
                 "type": "HTTPRewrite"
@@ -42409,6 +42432,21 @@
             ]
           },
           {
+            "name": "Delegate",
+            "fields": [
+              {
+                "id": 1,
+                "name": "name",
+                "type": "string"
+              },
+              {
+                "id": 2,
+                "name": "namespace",
+                "type": "string"
+              }
+            ]
+          },
+          {
             "name": "Headers",
             "fields": [
               {
@@ -42474,6 +42512,11 @@
                 "name": "route",
                 "type": "RouteDestination",
                 "is_repeated": true
+              },
+              {
+                "id": 3,
+                "name": "delegate",
+                "type": "Delegate"
               }
             ]
           },
@@ -42491,6 +42534,11 @@
                 "name": "route",
                 "type": "RouteDestination",
                 "is_repeated": true
+              },
+              {
+                "id": 3,
+                "name": "delegate",
+                "type": "Delegate"
               }
             ]
           },
