@@ -3735,6 +3735,18 @@ spec:
                       maxAge:
                         type: string
                     type: object
+                  delegate:
+                    properties:
+                      name:
+                        description: Name specifies the name of the delegated VirtualService.
+                        format: string
+                        type: string
+                      namespace:
+                        description: Namespace specifies the namespace where the delegated
+                          VirtualService resides.
+                        format: string
+                        type: string
+                    type: object
                   fault:
                     description: Fault injection policy to apply on HTTP traffic at
                       the client side.
@@ -4180,6 +4192,18 @@ spec:
               description: An ordered list of route rules for opaque TCP traffic.
               items:
                 properties:
+                  delegate:
+                    properties:
+                      name:
+                        description: Name specifies the name of the delegated VirtualService.
+                        format: string
+                        type: string
+                      namespace:
+                        description: Namespace specifies the namespace where the delegated
+                          VirtualService resides.
+                        format: string
+                        type: string
+                    type: object
                   match:
                     items:
                       properties:
@@ -4252,6 +4276,18 @@ spec:
             tls:
               items:
                 properties:
+                  delegate:
+                    properties:
+                      name:
+                        description: Name specifies the name of the delegated VirtualService.
+                        format: string
+                        type: string
+                      namespace:
+                        description: Namespace specifies the namespace where the delegated
+                          VirtualService resides.
+                        format: string
+                        type: string
+                    type: object
                   match:
                     items:
                       properties:
