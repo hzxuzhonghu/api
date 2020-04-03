@@ -586,9 +586,9 @@ message HTTPRoute {
   HTTPRedirect redirect = 3;
 
   // Delegate is used to specify the particular VirtualService which
-  // can be used to define delegated HTTPRoute.
+  // can be used to define delegate HTTPRoute.
   // It can be set only when `Route` and `Redirect` are empty, and the route rules of the
-  // delegated VirtualService will be merged with that in the current one.
+  // delegate VirtualService will be merged with that in the current one.
   // **NOTE**:
   //    1. Only one tier of delegate is supported.
   //    2. The delegate's HTTPMatchRequest must be a strict subset of the root's,
@@ -647,9 +647,9 @@ message HTTPRoute {
 }
 
 
-// Describes the delegated VirtualService.
-// The following routing rules forward the traffic to `/productpage` by a delegated VirtualService named `productpage`,
-// forward the traffic to `/reviews` by a delegated VirtualService named `reviews`.
+// Describes the delegate VirtualService.
+// The following routing rules forward the traffic to `/productpage` by a delegate VirtualService named `productpage`,
+// forward the traffic to `/reviews` by a delegate VirtualService named `reviews`.
 //
 // ```yaml
 // apiVersion: networking.istio.io/v1alpha3
@@ -708,9 +708,9 @@ message HTTPRoute {
 //         host: reviews.nsB.svc.cluster.local
 // ```
 message Delegate {
-  // Name specifies the name of the delegated VirtualService.
+  // Name specifies the name of the delegate VirtualService.
   string name = 1;
-  // Namespace specifies the namespace where the delegated VirtualService resides.
+  // Namespace specifies the namespace where the delegate VirtualService resides.
   // By default, it is same to the root's.
   string namespace = 2;
 }
@@ -879,16 +879,6 @@ message TLSRoute {
 
   // The destination to which the connection should be forwarded to.
   repeated RouteDestination route = 2;
-
-  // Delegate is used to specify the particular VirtualService which
-  // can be used to define delegated TLSRoute.
-  // It can be set only when `Route` is empty, and the route rules of the
-  // delegated VirtualService will be merged with that in the current one.
-  // **NOTE**:
-  //    1. Only one tier of delegate can be set.
-  //    2. The delegate's Match conditions must be a strict subset of the root's,
-  //       otherwise there is a conflict and the TLSRoute will not take effect.
-  Delegate delegate = 3;
 }
 
 // Describes match conditions and actions for routing TCP traffic. The
@@ -945,16 +935,6 @@ message TCPRoute {
 
   // The destination to which the connection should be forwarded to.
   repeated RouteDestination route = 2;
-
-  // Delegate is used to specify the particular VirtualService which
-  // can be used to define delegated TCPRoute.
-  // It can be set only when `Route` is empty, and the route rules of the
-  // delegated VirtualService will be merged with that in the current one.
-  // **NOTE**:
-  //    1. Only one tier of delegate can be set.
-  //    2. The delegate's Match conditions must be a strict subset of the root's,
-  //       otherwise there is a conflict and the TCPRoute will not take effect.
-  Delegate delegate = 3;
 }
 
 // HttpMatchRequest specifies a set of criterion to be met in order for the
@@ -1012,7 +992,7 @@ message TCPRoute {
 // {{</tabset>}}
 //
 // HTTPMatchRequest CANNOT be empty.
-// **Note:** No regex string match can be set when delegated VirtualService is specified.
+// **Note:** No regex string match can be set when delegate VirtualService is specified.
 message HTTPMatchRequest {
   // The name assigned to a match. The match's name will be
   // concatenated with the parent route's name and will be logged in
